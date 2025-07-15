@@ -1,14 +1,23 @@
+import streamlit as st
 import pandas as pd
 
-# Baca file Excel
-df = pd.read_excel('LIST BAHAN KIMIA ORGANIK LPK.xlsx')
+st.title("📊 Analisis Bahan Kimia dari Excel")
 
-# Tampilkan semua data
-print("=== Daftar Bahan Kimia dan Tingkat Bahaya ===")
-print(df)
+uploaded_file = st.file_uploader("Upload file Excel (.xlsx)", type=["xlsx"])
 
-# Filter bahan dengan bahaya tinggi
-berbahaya = df[df['Bahaya'] == 'Tinggi']
+if uploaded_file is not None:
+    try:
+        df = pd.read_excel(uploaded_file)
+        st.success("File berhasil dibaca ✅")
 
-print("\n⚠ Bahan Kimia Berbahaya Tinggi:")
-print(berbahaya)
+        st.subheader("📋 Semua Data:")
+        st.dataframe(df)
+
+        st.subheader("⚠ Bahan Kimia Berbahaya Tinggi:")
+        bahaya_tinggi = df[df['Bahaya'].str.lower() == 'tinggi']
+        st.dataframe(bahaya_tinggi)
+
+    except Exception as e:
+        st.error(f"Gagal membaca file: {e}")
+else:
+    st.info("Silakan upload file Excel dengan kolom: Bahan Kimia, Rumus, Bahaya.")

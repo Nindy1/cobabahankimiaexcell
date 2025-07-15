@@ -1,7 +1,7 @@
 import json
 
 def load_data():
-    with open('data/chemicals.json') as f:
+    with open('data/devcontainer.json') as f:
         return json.load(f)
 
 def find_chemical(chemicals, name):
